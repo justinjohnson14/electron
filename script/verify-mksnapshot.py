@@ -50,6 +50,7 @@ def main():
         gen_bin_path = os.path.join(args.snapshot_files_dir, '*.bin')
         generated_bin_files = glob.glob(gen_bin_path)
         for bin_file in generated_bin_files:
+          print('copying generated file ' + bin_file)
           shutil.copy2(bin_file, app_path)
 
       test_path = os.path.join(SOURCE_ROOT, 'spec', 'fixtures', \
