@@ -10,7 +10,6 @@ import { emittedOnce, emittedNTimes } from './events-helpers';
 import { ifdescribe } from './spec-helpers';
 
 const partition = 'service-workers-spec';
-const uuid = v4();
 
 describe('session.serviceWorkers', () => {
   let ses: Electron.Session;
@@ -21,6 +20,10 @@ describe('session.serviceWorkers', () => {
   before(async () => {
     ses = session.fromPartition(partition);
     await ses.clearStorageData();
+  });
+
+  beforeEach(async () => {
+    const uuid = v4();
 
     server = http.createServer((req, res) => {
       // /{uuid}/{file}
@@ -37,20 +40,18 @@ describe('session.serviceWorkers', () => {
         resolve();
       });
     });
-  });
 
-  beforeEach(() => {
     w = new BrowserWindow({ show: false, webPreferences: { session: ses } });
   });
 
   afterEach(async () => {
-    await ses.clearStorageData();
     await closeWindow(w);
     w = null as any;
-  });
 
-  after(async () => {
-    server.close();
+    await ses.clearStorageData();
+    await new Promise(resolve => {
+      server.close(() => resolve());
+    });
   });
 
   describe('getAllRunning()', () => {
