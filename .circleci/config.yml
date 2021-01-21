@@ -740,7 +740,7 @@ step-verify-mksnapshot: &step-verify-mksnapshot
       cd src
       if  [ "$TARGET_ARCH" == "arm64" ] &&[ "`uname`" == "Darwin" ]; then
         echo "Verifying cross arch snapshot"
-        python electron/script/verify-mksnapshot.py --source-root "$PWD" --build-dir out/Default --snapshot-files-dir $PWD/out/Default/cross-arch-snapshots
+        python electron/script/verify-mksnapshot.py --source-root "$PWD" --build-dir out/Default --snapshot-files-dir $PWD/cross-arch-snapshots
       else
         python electron/script/verify-mksnapshot.py --source-root "$PWD" --build-dir out/Default
       fi
